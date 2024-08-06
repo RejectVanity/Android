@@ -614,7 +614,7 @@ class BrowserTabViewModelTest {
             bypassedSSLCertificatesRepository = mockBypassedSSLCertificatesRepository,
             userBrowserProperties = mockUserBrowserProperties,
             history = mockNavigationHistory,
-            newTabPixels = mockNewTabPixels,
+            newTabPixelsProvider = { mockNewTabPixels },
         )
 
         testee.loadData("abc", null, false)

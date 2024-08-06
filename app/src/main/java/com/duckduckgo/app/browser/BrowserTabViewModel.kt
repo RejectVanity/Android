@@ -207,6 +207,7 @@ import kotlinx.coroutines.flow.*
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.json.JSONObject
 import timber.log.Timber
+import javax.inject.Provider
 
 @ContributesViewModel(FragmentScope::class)
 class BrowserTabViewModel @Inject constructor(
@@ -265,7 +266,7 @@ class BrowserTabViewModel @Inject constructor(
     private val bypassedSSLCertificatesRepository: BypassedSSLCertificatesRepository,
     private val userBrowserProperties: UserBrowserProperties,
     private val history: NavigationHistory,
-    private val newTabPixels: NewTabPixels,
+    newTabPixelsProvider: Provider<NewTabPixels>, // Lazy to construct the instance and deps only when actually sending the pixel
 ) : WebViewClientListener,
     EditSavedSiteListener,
     DeleteBookmarkListener,
@@ -276,6 +277,7 @@ class BrowserTabViewModel @Inject constructor(
     private var buildingSiteFactoryJob: Job? = null
     private var hasUserSeenHistoryIAM = false
     private var lastAutoCompleteState: AutoCompleteViewState? = null
+    private val newTabPixels by lazy { newTabPixelsProvider.get() }
 
     private val replyProxyMap = mutableMapOf<String, JavaScriptReplyProxy>()
 
